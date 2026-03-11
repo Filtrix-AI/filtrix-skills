@@ -5,7 +5,7 @@ Filtrix MCP endpoint:
 - URL: `https://mcp.filtrix.ai/mcp`
 - Auth header: `Authorization: Bearer <FILTRIX_MCP_API_KEY>`
 
-This page documents MCP tool names, input arguments, and typical outputs.
+This page documents video-related MCP tools and typical outputs.
 
 ## Tools
 
@@ -30,54 +30,51 @@ Example `tools/call` arguments:
 {}
 ```
 
-### `generate_image_text`
+### `generate_video_text`
 
-Purpose: generate one image from text prompt.
+Purpose: start text-to-video generation task.
 
 Input arguments:
 
 - `prompt` required, string, `1..4000`
-- `mode` optional, enum, default `gpt-image-1`
-  - `gpt-image-1`
-  - `nano-banana`
-  - `nano-banana-2`
-- `model` optional, string
-  - backward-compatible alias; prefer `mode`
-- `size` optional, enum, default `1024x1024`
-  - `1024x1024`
-  - `1536x1024`
-  - `1024x1536`
-  - `auto`
-- `resolution` optional, enum, default `1K`
-  - `1K`
-  - `2K`
-  - `4K`
-  - used by `nano-banana-2`
-- `search_mode` optional, boolean, default `false`
-  - used by `nano-banana-2`
-- `enhance_mode` optional, boolean, default `false`
-  - used by `nano-banana-2`
+- `aspect_ratio` optional, string, default `16:9`
 - `idempotency_key` required, string, `8..128`
 
 Typical output:
 
 - `ok` boolean
-- `image` string, storage path
-- `image_path` string, same as `image`
-- `image_url` string or null, signed URL
-- `image_url_error` string or null
-- `credits_used` number
-- `mode` string
-- `model` string (normalized model name)
+- downstream task payload from video backend
+  - usually includes `request_id` and a status/state field
 
 Example `tools/call` arguments:
 
 ```json
 {
-  "prompt": "a cinematic fox in snow, film still",
-  "mode": "gpt-image-1",
-  "size": "1024x1024",
-  "idempotency_key": "img-001-demo"
+  "prompt": "a drone shot over neon city at night",
+  "aspect_ratio": "16:9",
+  "idempotency_key": "vid-001-demo"
+}
+```
+
+### `get_video_status`
+
+Purpose: query status for a previously created video request.
+
+Input arguments:
+
+- `request_id` required, string
+
+Typical output:
+
+- `ok` boolean
+- downstream status payload from video backend
+  - may include `status` and downloadable `video_url` when complete
+
+Example `tools/call` arguments:
+
+```json
+{
+  "request_id": "your-request-id"
 }
 ```
 

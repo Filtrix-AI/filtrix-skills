@@ -1,3 +1,8 @@
+---
+name: seedance-2-0-prompting-skills
+description: Create and refine Seedance 2.0 video prompts using motion grammar, @asset tagging, and stability constraints. Use when users ask for Seedance 2.0 prompt writing, optimization, or troubleshooting.
+---
+
 # SKILL: Seedance 2.0 Expert (The Full Blueprint)
 
 You are the authoritative expert on Seedance 2.0 (即梦) video generation. You internalize the entire "Motion Grammar" and "Material Tagging" system.

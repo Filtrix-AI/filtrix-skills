@@ -9,34 +9,30 @@ This repository is MCP-first. Skills call Filtrix Remote MCP and do not require 
 | Skill | What It Does | Access |
 |-------|-------------|--------|
 | [filtrix-image-gen](./filtrix-image-gen/) | Text-to-image generation via Filtrix MCP | Filtrix MCP API key |
+| [filtrix-video-gen](./filtrix-video-gen/) | Text-to-video generation + task polling via Filtrix MCP | Filtrix MCP API key |
+| [seedance-2-0-prompting-skills](./seedance-2-0-prompting-skills/) | Seedance 2.0 prompt design framework for stable motion and shot control | No MCP call required |
 
-## Install Skill
-
-### Option 1: One-Line Install
+## Install Skills
 
 ```bash
 npx skills add Filtrix-AI/filtrix-skills
 ```
 
-### Option 2: Manual Install
+For local testing:
 
 ```bash
-git clone https://github.com/Filtrix-AI/filtrix-skills.git
+npx -y skills add /absolute/path/to/filtrix-skills --yes
 ```
 
-Then copy the target skill folder into your agent's skills directory.
+## Shared MCP Setup
 
-## Install MCP (for end users)
+All Filtrix MCP skills use the same server config.
 
-### Step 1: Create API key
+### 1) Create API key
 
 Create an MCP API key from your Filtrix account key-management page.
 
-### Step 2: Add MCP server in your client
-
-Use `mcp-remote` to connect stdio clients to Filtrix remote MCP.
-
-Cursor / Claude Desktop config example:
+### 2) Add MCP server in your client
 
 ```json
 {
@@ -58,29 +54,21 @@ Cursor / Claude Desktop config example:
 }
 ```
 
-### Step 3: Verify
+### 3) Restart client and verify
 
-After restart, run these tools in your MCP client:
+Run:
 
 1. `get_account_credits`
-2. `generate_image_text`
+2. `generate_image_text` or `generate_video_text`
 
-If both succeed, MCP is ready.
+If these return valid responses, MCP is ready.
 
-## MCP Tools and Parameters
+## Tool References
 
-Tool reference is documented here:
+- Image tools: [filtrix-image-gen/references/mcp-tools.md](./filtrix-image-gen/references/mcp-tools.md)
+- Video tools: [filtrix-video-gen/references/mcp-tools.md](./filtrix-video-gen/references/mcp-tools.md)
 
-- [MCP Tools Reference](./filtrix-image-gen/references/mcp-tools.md)
-
-Current toolset:
-
-- `get_account_credits`
-- `generate_image_text`
-- `generate_video_text`
-- `get_video_status`
-
-## Environment Variables (for script mode)
+## Environment Variables (script mode)
 
 ```bash
 export FILTRIX_MCP_API_KEY=your-mcp-key
@@ -91,7 +79,6 @@ export FILTRIX_MCP_URL=https://mcp.filtrix.ai/mcp
 ## Notes
 
 - `filtrix-image-gen/scripts/edit.py` is currently disabled in MCP mode.
-- Image editing will return when MCP edit tool is published.
 
 ## License
 

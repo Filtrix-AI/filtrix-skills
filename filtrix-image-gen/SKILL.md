@@ -15,8 +15,6 @@ Available MCP tools:
 
 - `get_account_credits`
 - `generate_image_text`
-- `generate_video_text`
-- `get_video_status`
 
 ## Setup
 
@@ -57,7 +55,6 @@ If omitted, the script auto-generates one UUID-based key.
 
 ## References
 
-- [MCP Install Guide](references/mcp-install.md)
 - [MCP Tools Reference](references/mcp-tools.md)
 - [gpt-image-1 Mode](references/gpt-image-1.md)
 - [nano-banana Mode](references/nano-banana.md)
