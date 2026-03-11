@@ -1,104 +1,78 @@
-# filtrix-image-gen
+# filtrix-image-gen (MCP)
 
-Generate and edit images using multiple AI providers — zero dependencies, pure Python.
+Generate images through Filtrix Remote MCP.
 
-## Supported Providers & Models
+## MCP Endpoint
 
-| Provider | Model | Type | Best For |
-|----------|-------|------|----------|
-| Google Gemini | `gemini-2.5-flash-image` | Generate + Edit | Fast, cheap — **recommended default** |
-| Google Gemini | `gemini-3-pro-image-preview` | Generate + Edit | Premium quality, up to 4K resolution |
-| OpenAI | `gpt-image-1` | Generate + Edit | Photorealistic, artistic, mask-based inpainting |
-| fal.ai | `seedream45` | Generate + Edit | Asian aesthetics, anime |
-| fal.ai | `seedream4` | Generate + Edit | General purpose |
-| fal.ai | `flux-pro` | Generate | Photorealism |
-| fal.ai | `flux-dev` | Generate | Open weights |
-| fal.ai | `recraft-v3` | Generate | Design, illustration, logos |
+- URL: `https://mcp.filtrix.ai/mcp`
+- Auth: `Authorization: Bearer <FILTRIX_MCP_API_KEY>`
+
+## Supported Modes
+
+| Mode | Notes |
+|------|-------|
+| `gpt-image-1` | Best general quality |
+| `nano-banana` | Fast generation |
+| `nano-banana-2` | Advanced controls |
 
 ## Setup
 
-Set API key(s) as environment variables (you only need keys for providers you'll use):
+```bash
+export FILTRIX_MCP_API_KEY=your-mcp-key
+# optional
+export FILTRIX_MCP_URL=https://mcp.filtrix.ai/mcp
+```
+
+## Usage
+
+### Generate Images
 
 ```bash
-export GOOGLE_API_KEY=your-key    # https://aistudio.google.com
-export OPENAI_API_KEY=your-key    # https://platform.openai.com
-export FAL_KEY=your-key           # https://fal.ai/dashboard
+# default mode: gpt-image-1
+python scripts/generate.py --prompt "a fox in a forest, watercolor style"
+
+# nano-banana
+python scripts/generate.py --prompt "cinematic sunset over mountains" --mode nano-banana --size 1536x1024
+
+# nano-banana-2 with advanced options
+python scripts/generate.py \
+  --prompt "futuristic city at night" \
+  --mode nano-banana-2 \
+  --size 1024x1536 \
+  --resolution 2K \
+  --enhance-mode
 ```
 
-## Usage Examples
-
-### Generate Images (Text → Image)
-
-```bash
-# Basic generation (Gemini Flash — fast and cheap)
-python scripts/generate.py --provider gemini --prompt "a fox in a forest, watercolor style"
-
-# High quality with Gemini Pro, 2K resolution, landscape
-python scripts/generate.py --provider gemini \
-  --model gemini-3-pro-image-preview \
-  --prompt "cinematic sunset over mountains" \
-  --size 16:9 --resolution 2K
-
-# Using OpenAI
-python scripts/generate.py --provider openai --prompt "a cat wearing sunglasses" --size 1024x1024
-
-# Using fal.ai with specific model
-python scripts/generate.py --provider fal --model flux-pro --prompt "professional headshot photo"
-```
-
-### Edit Images (Image → Image)
-
-```bash
-# Style transfer with Gemini
-python scripts/edit.py --provider gemini \
-  --image input.png \
-  --prompt "transform into cyberpunk style with neon lights"
-
-# High-res edit with Gemini Pro
-python scripts/edit.py --provider gemini \
-  --model gemini-3-pro-image-preview \
-  --image photo.png \
-  --prompt "change background to a beach sunset" \
-  --resolution 2K
-
-# Inpainting with OpenAI (mask-based)
-python scripts/edit.py --provider openai \
-  --image photo.png --mask mask.png \
-  --prompt "replace the sky with aurora borealis"
-
-# Edit with fal.ai SeedReam
-python scripts/edit.py --provider fal \
-  --image portrait.png \
-  --prompt "change hair color to blue"
-```
-
-### Output
-
-Both scripts print the result path on success:
-```
-OK: /tmp/filtrix_gemini_20260213_120000.png (1820826 bytes)
-```
-
-## Prompt Tips
-
-Need help writing prompts? Check out:
-- **[filtrix.ai/prompts](https://www.filtrix.ai/prompts)** — 100+ production-tested prompts you can copy directly
-- **references/prompts.md** — Built-in prompt writing guide with tips by category
-
-## File Structure
+On success:
 
 ```
-filtrix-image-gen/
-├── SKILL.md              # Agent instructions (auto-loaded by compatible agents)
-├── scripts/
-│   ├── generate.py       # Text-to-image generation
-│   └── edit.py           # Image-to-image editing
-└── references/
-    ├── openai.md         # OpenAI-specific parameters and tips
-    ├── gemini.md         # Gemini-specific parameters and tips
-    ├── fal.md            # fal.ai-specific parameters and tips
-    └── prompts.md        # Prompt writing guide
+OK: /tmp/filtrix_mcp_gpt-image-1_20260311_120000.png (1820826 bytes)
+mode=gpt-image-1 idempotency_key=gen-... credits_used=10
 ```
+
+## Parameters
+
+- `--prompt` required
+- `--mode` optional, default `gpt-image-1`
+- `--size` optional, default `1024x1024`
+- `--resolution` optional, only used by `nano-banana-2`
+- `--search-mode` optional, only used by `nano-banana-2`
+- `--enhance-mode` optional, only used by `nano-banana-2`
+- `--idempotency-key` optional, auto-generated if omitted
+- `--output` optional file path
+
+## Image Editing Status
+
+`edit.py` is intentionally disabled in MCP mode right now.
+Current public MCP provides `generate_image_text` only.
+
+## References
+
+- [MCP Install Guide](./references/mcp-install.md)
+- [gpt-image-1 Mode](./references/gpt-image-1.md)
+- [nano-banana Mode](./references/nano-banana.md)
+- [nano-banana-2 Mode](./references/nano-banana-2.md)
+- [Prompt Guide](./references/prompts.md)
 
 ## License
 

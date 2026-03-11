@@ -1,100 +1,84 @@
 # Filtrix Skills
 
-Open-source agent skills from [Filtrix AI](https://www.filtrix.ai) — battle-tested capabilities extracted from building AI image and video generation products.
+Open-source agent skills from [Filtrix AI](https://www.filtrix.ai).
 
-## What Is This?
-
-This is a collection of **agent skills** — modular capabilities that any AI coding agent can use. If you use Claude Code, Cursor, Copilot, Windsurf, OpenClaw, or any of the [20+ supported agents](https://skills.sh), you can install these skills and your agent will know how to generate and edit images for you.
-
-We built [Filtrix AI](https://app.filtrix.ai), an AI image generation platform. These skills package our production-tested API patterns, prompt expertise, and multi-provider routing into reusable modules that any agent can pick up.
+This repository is MCP-first. Skills call Filtrix Remote MCP and do not require direct provider API keys.
 
 ## Available Skills
 
-| Skill | What It Does | Supported Providers |
-|-------|-------------|-----------|
-| [filtrix-image-gen](./filtrix-image-gen/) | Generate images from text + edit existing images with AI | OpenAI, Google Gemini, fal.ai (5+ models) |
+| Skill | What It Does | Access |
+|-------|-------------|--------|
+| [filtrix-image-gen](./filtrix-image-gen/) | Text-to-image generation via Filtrix MCP | Filtrix MCP API key |
 
-More skills coming soon — video generation, batch processing, and more.
+## Install Skill
 
-## Installation
-
-### Option 1: One-Line Install (Recommended)
-
-Works with Claude Code, Cursor, Windsurf, Copilot, and [20+ other agents](https://skills.sh):
+### Option 1: One-Line Install
 
 ```bash
 npx skills add Filtrix-AI/filtrix-skills
 ```
 
-This downloads the skills into your project's skills directory. Your agent will automatically detect and use them.
-
-### Option 2: ClawHub (for OpenClaw users)
+### Option 2: Manual Install
 
 ```bash
-npm i -g clawhub          # Install ClawHub CLI (one-time)
-clawhub install filtrix-image-gen
+git clone https://github.com/Filtrix-AI/filtrix-skills.git
 ```
 
-### Option 3: Manual Install
+Then copy the target skill folder into your agent's skills directory.
 
-1. Clone this repo (or download the skill folder):
-   ```bash
-   git clone https://github.com/Filtrix-AI/filtrix-skills.git
-   ```
-2. Copy the skill folder you want into your agent's skills directory:
-   ```bash
-   # For Claude Code:
-   cp -r filtrix-skills/filtrix-image-gen .claude/skills/
+## Install MCP (for end users)
 
-   # For Cursor:
-   cp -r filtrix-skills/filtrix-image-gen .cursor/skills/
+### Step 1: Create API key
 
-   # For OpenClaw:
-   cp -r filtrix-skills/filtrix-image-gen ~/.openclaw/skills/
-   ```
+Create an MCP API key from your Filtrix account key-management page.
 
-## Setup (After Install)
+### Step 2: Add MCP server in your client
 
-Each skill needs API keys from the providers you want to use. Set them as environment variables:
+Use `mcp-remote` to connect stdio clients to Filtrix remote MCP.
+
+Cursor / Claude Desktop config example:
+
+```json
+{
+  "mcpServers": {
+    "filtrix": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://mcp.filtrix.ai/mcp",
+        "--header",
+        "Authorization:${AUTH_HEADER}"
+      ],
+      "env": {
+        "AUTH_HEADER": "Bearer <YOUR_FILTRIX_MCP_API_KEY>"
+      }
+    }
+  }
+}
+```
+
+### Step 3: Verify
+
+After restart, run these tools in your MCP client:
+
+1. `get_account_credits`
+2. `generate_image_text`
+
+If both succeed, MCP is ready.
+
+## Environment Variables (for script mode)
 
 ```bash
-# Pick one or more — you only need keys for providers you want to use
-
-# Google Gemini (recommended — fast and cheap)
-export GOOGLE_API_KEY=your-key-here    # Get at: https://aistudio.google.com
-
-# OpenAI (best quality)
-export OPENAI_API_KEY=your-key-here    # Get at: https://platform.openai.com
-
-# fal.ai (most model variety)
-export FAL_KEY=your-key-here           # Get at: https://fal.ai/dashboard
+export FILTRIX_MCP_API_KEY=your-mcp-key
+# optional
+export FILTRIX_MCP_URL=https://mcp.filtrix.ai/mcp
 ```
 
-Add these to your `~/.zshrc` or `~/.bashrc` to persist across sessions.
+## Notes
 
-## Usage
-
-Once installed, just ask your agent naturally:
-
-> "Generate an image of a fox in a forest, watercolor style"
-
-> "Edit this image to look like a cyberpunk scene"
-
-> "Create a 2K landscape photo of a sunset over mountains using Gemini Pro"
-
-Your agent reads the skill's instructions and handles the rest — picking the right provider, setting parameters, and returning the image.
-
-## What Makes These Different
-
-- **Zero dependencies** — Pure Python stdlib. No `pip install` needed.
-- **Multi-provider** — One skill, multiple AI backends. Bring your own API keys.
-- **Production-tested** — Every API call pattern is verified against real production traffic at [Filtrix AI](https://app.filtrix.ai).
-- **Prompt expertise** — 100+ curated prompts at [filtrix.ai/prompts](https://www.filtrix.ai/prompts), with a built-in writing guide.
-- **Generate + Edit** — Text-to-image and image-to-image editing in one package.
-
-## Contributing
-
-Issues and PRs welcome. If you find a better prompt pattern or want to add a new provider, open a PR.
+- `filtrix-image-gen/scripts/edit.py` is currently disabled in MCP mode.
+- Image editing will return when MCP edit tool is published.
 
 ## License
 
@@ -102,6 +86,6 @@ MIT
 
 ## Links
 
-- [Filtrix AI App](https://app.filtrix.ai) — Full-featured AI image generation platform
-- [Prompt Library](https://www.filtrix.ai/prompts) — 100+ curated AI prompts with copy-paste examples
-- [skills.sh](https://skills.sh) — The open agent skills ecosystem
+- [Filtrix AI App](https://app.filtrix.ai)
+- [Prompt Library](https://www.filtrix.ai/prompts)
+- [skills.sh](https://skills.sh)
