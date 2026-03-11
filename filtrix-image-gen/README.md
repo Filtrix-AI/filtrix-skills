@@ -7,6 +7,19 @@ Generate images through Filtrix Remote MCP.
 - URL: `https://mcp.filtrix.ai/mcp`
 - Auth: `Authorization: Bearer <FILTRIX_MCP_API_KEY>`
 
+## Tools
+
+| Tool | Purpose | Key Inputs |
+|------|---------|------------|
+| `get_account_credits` | Query credits and plan status | none |
+| `generate_image_text` | Text-to-image generation | `prompt`, `mode`, `size`, `idempotency_key` |
+| `generate_video_text` | Text-to-video task creation | `prompt`, `aspect_ratio`, `idempotency_key` |
+| `get_video_status` | Check video task status | `request_id` |
+
+Detailed input schema and examples:
+
+- [MCP Tools Reference](./references/mcp-tools.md)
+
 ## Supported Modes
 
 | Mode | Notes |
@@ -64,11 +77,12 @@ mode=gpt-image-1 idempotency_key=gen-... credits_used=10
 ## Image Editing Status
 
 `edit.py` is intentionally disabled in MCP mode right now.
-Current public MCP provides `generate_image_text` only.
+Current public MCP has no image-edit tool yet.
 
 ## References
 
 - [MCP Install Guide](./references/mcp-install.md)
+- [MCP Tools Reference](./references/mcp-tools.md)
 - [gpt-image-1 Mode](./references/gpt-image-1.md)
 - [nano-banana Mode](./references/nano-banana.md)
 - [nano-banana-2 Mode](./references/nano-banana-2.md)

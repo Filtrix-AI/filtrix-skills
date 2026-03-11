@@ -67,6 +67,19 @@ After restart, run these tools in your MCP client:
 
 If both succeed, MCP is ready.
 
+## MCP Tools and Parameters
+
+Tool reference is documented here:
+
+- [MCP Tools Reference](./filtrix-image-gen/references/mcp-tools.md)
+
+Current toolset:
+
+- `get_account_credits`
+- `generate_image_text`
+- `generate_video_text`
+- `get_video_status`
+
 ## Environment Variables (for script mode)
 
 ```bash

@@ -41,6 +41,10 @@ Call:
 
 If both work, installation is complete.
 
+Tool input parameter reference:
+
+- [MCP Tools Reference](./mcp-tools.md)
+
 ## 5) Troubleshooting
 
 - `401 Unauthorized`: key invalid / revoked / malformed header
