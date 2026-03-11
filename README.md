@@ -8,8 +8,8 @@ This repository is MCP-first. Skills call Filtrix Remote MCP and do not require 
 
 | Skill | What It Does | Access |
 |-------|-------------|--------|
-| [filtrix-image-gen](./filtrix-image-gen/) | Text-to-image generation via Filtrix MCP | Filtrix MCP API key |
-| [filtrix-video-gen](./filtrix-video-gen/) | Text-to-video generation + task polling via Filtrix MCP | Filtrix MCP API key |
+| [filtrix-image-gen](./filtrix-image-gen/) | Text-to-image + image editing via Filtrix MCP | Filtrix MCP API key |
+| [filtrix-video-gen](./filtrix-video-gen/) | Text-to-video + image-to-video + task polling via Filtrix MCP | Filtrix MCP API key |
 | [seedance-2-0-prompting-skills](./seedance-2-0-prompting-skills/) | Seedance 2.0 prompt design framework for stable motion and shot control | No MCP call required |
 
 ## Install Skills
@@ -59,7 +59,7 @@ Create an MCP API key from your Filtrix account key-management page.
 Run:
 
 1. `get_account_credits`
-2. `generate_image_text` or `generate_video_text`
+2. `generate_image_text` / `edit_image_text` / `generate_video_text` / `generate_video_image`
 
 If these return valid responses, MCP is ready.
 
@@ -78,7 +78,7 @@ export FILTRIX_MCP_URL=https://mcp.filtrix.ai/mcp
 
 ## Notes
 
-- `filtrix-image-gen/scripts/edit.py` is currently disabled in MCP mode.
+- `generate_video_image` in MCP fixes Seedance audio to `on` and supports local images via base64.
 
 ## License
 
